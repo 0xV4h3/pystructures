@@ -1,0 +1,35 @@
+[project]
+name = "pystructures"
+version = "0.1.0"
+description = "A collection of linear, nonlinear, and unordered data structures implemented in Python."
+authors = [
+    { name = "Vahe Babayan (0xV4h3)", email = "your@email.com" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+keywords = ["data structures", "algorithms", "python", "linked list", "tree", "heap", "hash"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/0xV4h3/PyStructures"
+Repository = "https://github.com/0xV4h3/PyStructures"
+Issues = "https://github.com/0xV4h3/PyStructures/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["pystructures"]
