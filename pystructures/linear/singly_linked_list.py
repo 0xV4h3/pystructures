@@ -37,7 +37,7 @@ class SinglyLinkedList:
             self._head = node
             self._tail = node
         else:
-            assert self._tail is not None  # For type checker
+            assert self._tail is not None
             self._tail.next = node
             self._tail = node
         self._size += 1

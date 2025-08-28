@@ -67,7 +67,7 @@ lst.insert(2, 'a')  # SinglyLinkedList([0, 1, 'a', 2, 3, 4])
 ---
 
 #### `pop(index: int = -1) -> Any`
-Remove and return element at `index` (default: last). **O(n)**
+Remove and return element at `index` (default: last). **O(1) for ends, O(n) by index**
 - Raises `IndexError` if empty or out of range.
 
 #### Example
@@ -209,22 +209,22 @@ Check if list is empty.
 
 ## Method Overview
 
-| Method      | Args                      | Returns      | Time Complexity | Notes    |
-|:------------|:--------------------------|:-------------|:---------------|:---------|
-| `append`    | `data: Any`               | `None`       | O(1)           |          |
-| `prepend`   | `data: Any`               | `None`       | O(1)           |          |
-| `insert`    | `index: int, data: Any`   | `None`       | O(n)           | At index |
-| `pop`       | `index: int = -1`         | `Any`        | O(n)           | By index |
-| `remove`    | `value: Any`              | `None`       | O(n)           | By value |
-| `get`       | `index: int`              | `Any`        | O(n)           | By index |
-| `find`      | `value: Any`              | `int`        | O(n)           | By value |
-| `clear`     | —                         | `None`       | O(1)           |          |
-| `copy`      | —                         | `SinglyLinkedList` | O(n)     |          |
-| `reverse`   | —                         | `None`       | O(n)           | In-place |
-| `extend`    | `iterable: Iterable[Any]` | `None`       | O(n)           |          |
-| `to_list`   | —                         | `list[Any]`  | O(n)           |          |
-| `count`     | `value: Any`              | `int`        | O(n)           |          |
-| `is_empty`  | —                         | `bool`       | O(1)           |          |
+| Method      | Args                      | Returns      | Time Complexity   | Notes    |
+|:------------|:--------------------------|:-------------|:------------------|:---------|
+| `append`    | `data: Any`               | `None`       | O(1)              |          |
+| `prepend`   | `data: Any`               | `None`       | O(1)              |          |
+| `insert`    | `index: int, data: Any`   | `None`       | O(n)              | At index |
+| `pop`       | `index: int = -1`         | `Any`        | O(1)/O(n)         | Ends: O(1), index: O(n) |
+| `remove`    | `value: Any`              | `None`       | O(n)              | By value |
+| `get`       | `index: int`              | `Any`        | O(n)              | By index |
+| `find`      | `value: Any`              | `int`        | O(n)              | By value |
+| `clear`     | —                         | `None`       | O(1)              |          |
+| `copy`      | —                         | `SinglyLinkedList` | O(n)              |          |
+| `reverse`   | —                         | `None`       | O(n)              | In-place |
+| `extend`    | `iterable: Iterable[Any]` | `None`       | O(n)              |          |
+| `to_list`   | —                         | `list[Any]`  | O(n)              |          |
+| `count`     | `value: Any`              | `int`        | O(n)              |          |
+| `is_empty`  | —                         | `bool`       | O(1)              |          |
 
 ---
 
