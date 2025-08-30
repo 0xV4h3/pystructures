@@ -1,7 +1,7 @@
 # Stack
 
-A Python implementation of a classic **LIFO (Last-In, First-Out) stack** with a rich, Pythonic API.  
-Supports efficient push/pop/peek operations, iteration, copying, bulk operations, and more.
+A Python implementation of a classic **LIFO (Last-In, First-Out) stack** with a strict, Pythonic API.  
+Supports efficient push/pop/peek operations, copying, bulk operations, and more.
 
 ---
 
@@ -12,7 +12,7 @@ It is ideal for scenarios requiring LIFO access—such as undo mechanisms, parsi
 
 - **Data type:** Any Python object
 - **Efficient operations:** O(1) push, pop, peek, clear
-- **Features:** Iteration, comparison, copying, indexing, search, bulk/batch operations
+- **Features:** Comparison, copying, bulk/batch operations, element search
 
 ---
 
@@ -115,28 +115,7 @@ stk = Stack.from_iterable(range(3))  # Stack([2, 1, 0])
 
 ---
 
-### Search & Indexing
-
-#### `get(index: int) -> Any`
-Return element by index (`0 = top`). **O(n)**
-- Supports negative indices (`-1 = bottom`).
-- Raises `IndexError` if out of range.
-
-#### Example
-```python
-stk.get(0)    # Top element
-stk.get(-1)   # Bottom element
-```
-
----
-
-#### `find(value: Any) -> int`
-Return index of first occurrence (top=0), or -1 if not found. **O(n)**
-```python
-stk.find(2)  # Index of 2 from top, or -1
-```
-
----
+### Search & Utility
 
 #### `count(value: Any) -> int`
 Count occurrences of value. **O(n)**
@@ -160,14 +139,8 @@ Supports `value in stk`.
 #### `__len__() -> int`
 Return number of elements.
 
-#### `__iter__()`
-Iterator over elements from top to bottom.
-
 #### `__str__()`, `__repr__()`
 String representations.
-
-#### `__getitem__(index: int) -> Any`
-Indexing: `stk[index]`, `stk[-1]`.
 
 #### `__eq__(other: object) -> bool`
 Element-wise comparison.
@@ -186,8 +159,6 @@ Element-wise comparison.
 | `copy`      | —                         | `Stack`      | O(n)              | LIFO order     |
 | `extend`    | `iterable: Iterable[Any]` | `None`       | O(n)              | Bulk push      |
 | `to_list`   | —                         | `list[Any]`  | O(n)              | Top → bottom   |
-| `get`       | `index: int`              | `Any`        | O(n)              | Top=0          |
-| `find`      | `value: Any`              | `int`        | O(n)              | Top=0          |
 | `count`     | `value: Any`              | `int`        | O(n)              |                |
 | `contains`  | `value: Any`              | `bool`       | O(n)              |                |
 
@@ -203,10 +174,7 @@ print(stk)         # Stack([3, 2, 1])
 stk.push(4)
 print(stk.peek())  # 4
 print(stk.pop())   # 4
-print(list(stk))   # [3, 2, 1]
-print(stk.get(0))  # 3 (top)
-print(stk.get(-1)) # 1 (bottom)
-print(stk.find(2)) # 1 (from top)
+print(stk.to_list())   # [3, 2, 1]
 print(3 in stk)    # True
 stk.clear()
 print(stk.is_empty())  # True
@@ -221,8 +189,7 @@ print(stk2 == stk) # True
 ## Notes
 
 - All elements are stored as-is (supports any Python object).
-- Negative indices supported for access.
-- Implements full iterator and container protocols.
+- Implements full container protocol (`__len__`, `__contains__`, `__eq__`, etc.).
 - Bulk operations (`extend`, `from_iterable`) preserve LIFO order (last in iterable becomes top).
 - For advanced usage, see [source code](../../pystructures/linear/stack.py).
 

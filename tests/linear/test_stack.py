@@ -65,19 +65,14 @@ def test_deepcopy():
     stack2.peek().append(99)
     assert stack != stack2
 
-def test_iterator():
-    stack = Stack([1, 2, 3])
-    items = [x for x in stack]
-    assert items == [3, 2, 1]
-
 def test_extend_and_from_iterable():
     stack = Stack()
     stack.extend([1, 2, 3])
-    assert list(stack) == [3, 2, 1]
+    assert stack.to_list() == [3, 2, 1]
     s2 = Stack.from_iterable([4, 5])
-    assert list(s2) == [5, 4]
+    assert s2.to_list() == [5, 4]
     stack.extend([])
-    assert list(stack) == [3, 2, 1]
+    assert stack.to_list() == [3, 2, 1]
 
 def test_to_list():
     stack = Stack([1, 2, 3])
@@ -85,35 +80,15 @@ def test_to_list():
 
 def test_contains_and_count():
     stack = Stack([1, "abc", None, "abc"])
+    assert stack.contains(1)
+    assert stack.contains("abc")
+    assert stack.count("abc") == 2
+    assert stack.contains(None)
+    assert not stack.contains(42)
     assert 1 in stack
     assert "abc" in stack
-    assert stack.count("abc") == 2
     assert None in stack
     assert 42 not in stack
-
-def test_find():
-    stack = Stack([1, 2, 3, 2])
-    assert stack.find(2) == 0
-    assert stack.find(99) == -1
-
-def test_get_and_indexing():
-    stack = Stack([1, 2, 3])
-    assert stack.get(0) == 3
-    assert stack.get(1) == 2
-    assert stack[2] == 1
-    assert stack.get(-1) == 1
-    assert stack.get(-2) == 2
-
-def test_get_out_of_range():
-    stack = Stack([1])
-    with pytest.raises(IndexError):
-        stack.get(5)
-    with pytest.raises(IndexError):
-        stack.get(-2)
-    with pytest.raises(IndexError):
-        _ = stack[2]
-    with pytest.raises(IndexError):
-        _ = stack[-2]
 
 def test_str_and_repr():
     stack = Stack([1, 2])
@@ -125,19 +100,47 @@ def test_str_and_repr():
 def test_bulk_operations_on_empty():
     stack = Stack()
     stack.extend([1, 2])
-    assert list(stack) == [2, 1]
+    assert stack.to_list() == [2, 1]
     stack.clear()
     stack.extend([])
-    assert list(stack) == []
+    assert stack.to_list() == []
     stack2 = Stack.from_iterable([])
-    assert list(stack2) == []
+    assert stack2.to_list() == []
 
 def test_non_numeric_types():
     class Dummy: pass
     obj = Dummy()
     stack = Stack(["a", obj, 3.14])
-    assert stack.find(obj) == 1
     assert stack.count("a") == 1
-    assert "a" in stack
-    assert 3.14 in stack
-    assert obj in stack
+    assert stack.contains("a")
+    assert stack.contains(3.14)
+    assert stack.contains(obj)
+
+def test_eq_and_len():
+    s1 = Stack([1, 2])
+    s2 = Stack([1, 2])
+    assert s1 == s2
+    s2.pop()
+    assert s1 != s2
+    assert len(s2) == 1
+
+def test_clear_and_is_empty():
+    s = Stack([1, 2])
+    s.clear()
+    assert s.is_empty()
+    assert len(s) == 0
+
+def test_copy_independence():
+    s1 = Stack([1, [2]])
+    s2 = s1.copy()
+    assert s1 == s2
+    s2.pop()
+    assert s1 != s2
+
+def test_deepcopy_independence():
+    import copy
+    s1 = Stack([[1]])
+    s2 = copy.deepcopy(s1)
+    assert s1 == s2
+    s2.peek().append(2)
+    assert s1 != s2

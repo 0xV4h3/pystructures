@@ -1,11 +1,12 @@
-from typing import Any, Optional, Iterator, Iterable
+from typing import Any, Optional, Iterable
 from copy import deepcopy
 
 class Stack:
     """
-    Stack: classic LIFO container with a rich Pythonic API.
+    Stack: classic LIFO container.
     - O(1) push/pop/peek operations.
-    - Iterator, comparison, copy, bulk operations, and utility methods.
+    - No iterator or index-based access.
+    - Comparison, copy, bulk operations, and utility methods.
     - Stores any Python object.
     """
 
@@ -28,14 +29,16 @@ class Stack:
 
     def push(self, data: Any) -> None:
         """
-        Add data to the top of the stack. O(1).
+        Add data to the top of the stack.
+        O(1)
         """
         self._top = self._Node(data, self._top)
         self._size += 1
 
     def pop(self) -> Any:
         """
-        Remove and return the top element. Raises IndexError if empty. O(1).
+        Remove and return the top element. Raises IndexError if empty.
+        O(1)
         """
         if self._top is None:
             raise IndexError("Pop from empty stack")
@@ -46,7 +49,8 @@ class Stack:
 
     def peek(self) -> Any:
         """
-        Return the top element without removing. Raises IndexError if empty. O(1).
+        Return the top element without removing. Raises IndexError if empty.
+        O(1)
         """
         if self._top is None:
             raise IndexError("Peek from empty stack")
@@ -54,102 +58,55 @@ class Stack:
 
     def is_empty(self) -> bool:
         """
-        Return True if the stack is empty. O(1).
+        Return True if the stack is empty.
+        O(1)
         """
         return self._size == 0
 
     def clear(self) -> None:
         """
-        Remove all elements from the stack. O(1).
+        Remove all elements from the stack.
+        O(1)
         """
         self._top = None
         self._size = 0
 
     def copy(self) -> 'Stack':
         """
-        Return a shallow copy of the stack. O(n).
+        Return a shallow copy of the stack.
+        O(n)
         """
-        items = list(self)
+        items = []
+        node = self._top
+        while node:
+            items.append(node.data)
+            node = node.next  # type: ignore
         return Stack(reversed(items))
 
     def __copy__(self) -> 'Stack':
+        """
+        Support for copy.copy().
+        O(n)
+        """
         return self.copy()
 
     def __deepcopy__(self, memo) -> 'Stack':
-        items = [deepcopy(x, memo) for x in self]
+        """
+        Support for copy.deepcopy().
+        O(n)
+        """
+        items = []
+        node = self._top
+        while node:
+            items.append(deepcopy(node.data, memo))
+            node = node.next  # type: ignore
         return Stack(reversed(items))
-
-    def __len__(self) -> int:
-        """
-        Return the number of elements in the stack. O(1).
-        """
-        return self._size
-
-    def __iter__(self) -> Iterator[Any]:
-        """
-        Iterator over elements from top to bottom (LIFO order). O(n).
-        """
-        node = self._top
-        while node:
-            yield node.data
-            node = node.next
-
-    def __str__(self) -> str:
-        """
-        String representation. O(n).
-        """
-        return f"Stack([{', '.join(repr(x) for x in self)}])"
-
-    def __repr__(self) -> str:
-        return str(self)
-
-    def __eq__(self, other: object) -> bool:
-        """
-        Compare stacks element-wise. O(n).
-        """
-        if not isinstance(other, Stack):
-            return False
-        return list(self) == list(other)
-
-    def __contains__(self, value: Any) -> bool:
-        """
-        Return True if value exists in stack. O(n).
-        """
-        return self.contains(value)
-
-    def contains(self, value: Any) -> bool:
-        """
-        Return True if value exists in stack. O(n).
-        """
-        node = self._top
-        while node:
-            if node.data == value:
-                return True
-            node = node.next
-        return False
-
-    def count(self, value: Any) -> int:
-        """
-        Count occurrences of value. O(n).
-        """
-        cnt = 0
-        node = self._top
-        while node:
-            if node.data == value:
-                cnt += 1
-            node = node.next
-        return cnt
-
-    def to_list(self) -> list[Any]:
-        """
-        Convert stack to Python list (top to bottom). O(n).
-        """
-        return list(self)
 
     def extend(self, iterable: Iterable[Any]) -> None:
         """
-        Push all elements from iterable (first in iterable ends up at bottom). O(n).
+        Push all elements from iterable.
         The last element of iterable becomes the top of the stack (LIFO).
+        O(n)
         """
         for item in iterable:
             self.push(item)
@@ -157,39 +114,92 @@ class Stack:
     @classmethod
     def from_iterable(cls, iterable: Iterable[Any]) -> 'Stack':
         """
-        Create a stack from iterable. O(n).
+        Create a stack from iterable.
+        O(n)
         """
         return cls(iterable)
 
-    def get(self, index: int) -> Any:
+    def to_list(self) -> list[Any]:
         """
-        Return element by index (0 = top). O(n).
-        Raises IndexError if out of range.
+        Convert stack to Python list (top to bottom).
+        O(n)
         """
-        if index < 0:
-            index += self._size
-        if index < 0 or index >= self._size:
-            raise IndexError("Index out of range")
+        items = []
         node = self._top
-        for _ in range(index):
+        while node:
+            items.append(node.data)
             node = node.next  # type: ignore
-        return node.data  # type: ignore
+        return items
 
-    def find(self, value: Any) -> int:
+    def contains(self, value: Any) -> bool:
         """
-        Return index of first occurrence of value (top=0), or -1 if not found. O(n).
+        Return True if value exists in stack.
+        O(n)
         """
-        idx = 0
         node = self._top
         while node:
             if node.data == value:
-                return idx
-            node = node.next
-            idx += 1
-        return -1
+                return True
+            node = node.next  # type: ignore
+        return False
 
-    def __getitem__(self, index: int) -> Any:
+    def count(self, value: Any) -> int:
         """
-        Indexing: stack[index], 0 = top. O(n).
+        Count occurrences of value.
+        O(n)
         """
-        return self.get(index)
+        cnt = 0
+        node = self._top
+        while node:
+            if node.data == value:
+                cnt += 1
+            node = node.next  # type: ignore
+        return cnt
+
+    def __contains__(self, value: Any) -> bool:
+        """
+        Return True if value exists in stack.
+        O(n)
+        """
+        return self.contains(value)
+
+    def __len__(self) -> int:
+        """
+        Return the number of elements in the stack.
+        O(1)
+        """
+        return self._size
+
+    def __str__(self) -> str:
+        """
+        String representation.
+        O(n)
+        """
+        items = []
+        node = self._top
+        while node:
+            items.append(repr(node.data))
+            node = node.next  # type: ignore
+        return f"Stack([{', '.join(items)}])"
+
+    def __repr__(self) -> str:
+        """
+        Representation for debugging.
+        O(n)
+        """
+        return str(self)
+
+    def __eq__(self, other: object) -> bool:
+        """
+        Compare stacks element-wise.
+        O(n)
+        """
+        if not isinstance(other, Stack):
+            return False
+        a, b = self._top, other._top  # type: ignore
+        while a and b:
+            if a.data != b.data:
+                return False
+            a = a.next  # type: ignore
+            b = b.next  # type: ignore
+        return a is None and b is None
