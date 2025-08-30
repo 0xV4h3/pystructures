@@ -1,7 +1,6 @@
 from typing import Any, Optional, Iterator, Iterable
 from copy import deepcopy
 
-
 class SinglyLinkedList:
     """
     SinglyLinkedList implements a classic singly linked list with full Pythonic API.
