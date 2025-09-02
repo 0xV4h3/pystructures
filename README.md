@@ -23,8 +23,7 @@ PyStructures/
             binary_search_tree.py
             avl_tree.py
             red_black_tree.py
-            max_heap.py
-            min_heap.py
+            heap.py
             priority_queue.py
             trie.py
             splay_tree.py
@@ -45,8 +44,7 @@ PyStructures/
             binary_search_tree.md
             avl_tree.md
             red_black_tree.md
-            max_heap.md
-            min_heap.md
+            heap.md
             priority_queue.md
             trie.md
             splay_tree.md
@@ -66,8 +64,7 @@ PyStructures/
             test_binary_search_tree.py
             test_avl_tree.py
             test_red_black_tree.py
-            test_max_heap.py
-            test_min_heap.py
+            test_heap.py
             test_priority_queue.py
             test_trie.py
             test_splay_tree.py
@@ -132,8 +129,7 @@ Detailed documentation for each data structure is available in the `docs/` direc
   - [BinarySearchTree](docs/nonlinear/binary_search_tree.md)
   - [AVLTree](docs/nonlinear/avl_tree.md)
   - [RedBlackTree](docs/nonlinear/red_black_tree.md)
-  - [MaxHeap](docs/nonlinear/max_heap.md)
-  - [MinHeap](docs/nonlinear/min_heap.md)
+  - [MaxHeap, MinHeap](docs/nonlinear/heap.md)
   - [PriorityQueue](docs/nonlinear/priority_queue.md)
   - [Trie](docs/nonlinear/trie.md)
   - [SplayTree](docs/nonlinear/splay_tree.md)
@@ -228,7 +224,7 @@ Import the required data structures:
 ```python
 from pystructures import Stack, BinaryTree, HashMap
 from pystructures.linear import Queue
-from pystructures.nonlinear import AVLTree
+from pystructures.nonlinear import AVLTree, MaxHeap, MinHeap
 from pystructures.unordered import GraphAdjacencyList
 
 # Example usage:
@@ -236,6 +232,13 @@ stack = Stack()
 stack.push(1)
 stack.push(2)
 print(stack.pop())  # Output: 2
+
+heap = MaxHeap([5, 3, 8])
+heap.push(10)
+print(heap.pop())  # Output: 10
+
+minheap = MinHeap([4, 2, 7])
+print(minheap.peek())  # Output: 2
 ```
 
 ---
