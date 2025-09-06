@@ -1,5 +1,7 @@
-from typing import Any, Optional, Iterable
+from typing import Any, Optional, Iterable, TypeVar, Type
 from copy import deepcopy
+
+T = TypeVar("T", bound="Queue")
 
 class Queue:
     """
@@ -84,16 +86,16 @@ class Queue:
         self._rear = None
         self._size = 0
 
-    def copy(self) -> 'Queue':
+    def copy(self) -> T:
         """
         Return a shallow copy of the queue. O(n).
         """
         return Queue(self.to_list())
 
-    def __copy__(self) -> 'Queue':
+    def __copy__(self) -> T:
         return self.copy()
 
-    def __deepcopy__(self, memo) -> 'Queue':
+    def __deepcopy__(self, memo) -> T:
         items = [deepcopy(x, memo) for x in self.to_list()]
         return Queue(items)
 
@@ -105,7 +107,7 @@ class Queue:
             self.enqueue(item)
 
     @classmethod
-    def from_iterable(cls, iterable: Iterable[Any]) -> 'Queue':
+    def from_iterable(cls: Type[T], iterable: Iterable[Any]) -> T:
         """
         Create a queue from iterable. O(n).
         """

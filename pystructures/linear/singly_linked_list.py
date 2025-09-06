@@ -1,5 +1,7 @@
-from typing import Any, Optional, Iterator, Iterable
+from typing import Any, Optional, Iterator, Iterable, TypeVar, Type
 from copy import deepcopy
+
+T = TypeVar("T", bound="SinglyLinkedList")
 
 class SinglyLinkedList:
     """
@@ -160,19 +162,19 @@ class SinglyLinkedList:
         self._tail = None
         self._size = 0
 
-    def copy(self) -> 'SinglyLinkedList':
+    def copy(self) -> T:
         """
         Return a shallow copy of the list. O(n).
         """
         return SinglyLinkedList(self)
 
-    def __copy__(self) -> 'SinglyLinkedList':
+    def __copy__(self) -> T:
         """
         Support for copy.copy(). O(n).
         """
         return self.copy()
 
-    def __deepcopy__(self, memo) -> 'SinglyLinkedList':
+    def __deepcopy__(self, memo) -> T:
         """
         Support for copy.deepcopy(). O(n).
         """
@@ -216,7 +218,7 @@ class SinglyLinkedList:
         return result
 
     @classmethod
-    def from_iterable(cls, iterable: Iterable[Any]) -> 'SinglyLinkedList':
+    def from_iterable(cls: Type[T], iterable: Iterable[Any]) -> T:
         """
         Create list from iterable. O(n).
         """

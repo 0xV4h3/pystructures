@@ -1,5 +1,7 @@
-from typing import Any, Optional, Iterable
+from typing import Any, Optional, Iterable, TypeVar, Type
 from copy import deepcopy
+
+T = TypeVar("T", bound="Stack")
 
 class Stack:
     """
@@ -71,7 +73,7 @@ class Stack:
         self._top = None
         self._size = 0
 
-    def copy(self) -> 'Stack':
+    def copy(self) -> T:
         """
         Return a shallow copy of the stack.
         O(n)
@@ -83,14 +85,14 @@ class Stack:
             node = node.next  # type: ignore
         return Stack(reversed(items))
 
-    def __copy__(self) -> 'Stack':
+    def __copy__(self) -> T:
         """
         Support for copy.copy().
         O(n)
         """
         return self.copy()
 
-    def __deepcopy__(self, memo) -> 'Stack':
+    def __deepcopy__(self, memo) -> T:
         """
         Support for copy.deepcopy().
         O(n)
@@ -112,7 +114,7 @@ class Stack:
             self.push(item)
 
     @classmethod
-    def from_iterable(cls, iterable: Iterable[Any]) -> 'Stack':
+    def from_iterable(cls: Type[T], iterable: Iterable[Any]) -> T:
         """
         Create a stack from iterable.
         O(n)

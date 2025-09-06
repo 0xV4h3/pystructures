@@ -4,7 +4,7 @@ from copy import deepcopy
 
 __all__ = ["MaxHeap", "MinHeap"]
 
-Self = TypeVar("Self", bound="_Heap")
+T = TypeVar("T", bound="_Heap")
 
 class _Heap(ABC):
     """
@@ -69,7 +69,7 @@ class _Heap(ABC):
             self._sift_down(i)
 
     @classmethod
-    def from_iterable(cls: Type[Self], iterable: Iterable[Any]) -> Self:
+    def from_iterable(cls: Type[T], iterable: Iterable[Any]) -> T:
         """
         Create a new heap instance from iterable. O(n).
         """
@@ -81,17 +81,17 @@ class _Heap(ABC):
         """
         self._data.clear()
 
-    def copy(self) -> "Self":
+    def copy(self) -> "T":
         """
         Return a shallow copy of the heap. O(n).
         """
         return self.__class__(self._data)
 
-    def __copy__(self: Self) -> Self:
+    def __copy__(self: T) -> T:
         """Support for copy.copy(). O(n)."""
         return self.copy()
 
-    def __deepcopy__(self: Self, memo) -> Self:
+    def __deepcopy__(self: T, memo) -> T:
         """Support for copy.deepcopy(). O(n)."""
         copied_data = deepcopy(self._data, memo)
         return self.__class__(copied_data)

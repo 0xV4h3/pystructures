@@ -1,5 +1,7 @@
-from typing import Any, Optional, Iterator, Iterable
+from typing import Any, Optional, Iterator, Iterable, TypeVar, Type
 from copy import deepcopy
+
+T = TypeVar("T", bound="DoublyLinkedList")
 
 class DoublyLinkedList:
     """
@@ -180,19 +182,19 @@ class DoublyLinkedList:
         self._tail = None
         self._size = 0
 
-    def copy(self) -> 'DoublyLinkedList':
+    def copy(self) -> T:
         """
         Return a shallow copy of the list. O(n).
         """
         return DoublyLinkedList(self)
 
-    def __copy__(self) -> 'DoublyLinkedList':
+    def __copy__(self) -> T:
         """
         Support for copy.copy(). O(n).
         """
         return self.copy()
 
-    def __deepcopy__(self, memo) -> 'DoublyLinkedList':
+    def __deepcopy__(self, memo) -> T:
         """
         Support for copy.deepcopy(). O(n).
         """
@@ -237,7 +239,7 @@ class DoublyLinkedList:
         return result
 
     @classmethod
-    def from_iterable(cls, iterable: Iterable[Any]) -> 'DoublyLinkedList':
+    def from_iterable(cls: Type[T], iterable: Iterable[Any]) -> T:
         """
         Create list from iterable. O(n).
         """
