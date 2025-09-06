@@ -140,6 +140,18 @@ class _Heap(ABC):
             return False
         return self._data == other._data
 
+    def __str__(self) -> str:
+        """
+        String representation of the heap (internal order). O(n)
+        """
+        return f"{self.__class__.__name__}([{', '.join(repr(x) for x in self._data)}])"
+
+    def __repr__(self) -> str:
+        """
+        Debug representation of the heap. O(n)
+        """
+        return str(self)
+
     @staticmethod
     def _parent(index: int) -> int:
         """
